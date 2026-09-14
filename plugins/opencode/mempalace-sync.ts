@@ -16,7 +16,10 @@
 
 import type { PluginInput } from "@opencode-ai/plugin"
 
-const PROJECT = "/home/zhao/repos/mth/mempalace_mth"
+// 包根 = 本文件所在 plugins/opencode/ 的上两级。
+// git clone 与 npm 安装（~/.cache/opencode/node_modules/...）两种形态都成立；
+// 若脚本仓库放在别处，可用 MEMPALACE_PROJECT 环境变量覆盖。
+const PROJECT = process.env.MEMPALACE_PROJECT || `${import.meta.dir}/../..`
 const SCRIPT = `${PROJECT}/scripts/sync_opencode_to_mempalace.py`
 const DEBOUNCE_MS = 15 * 60 * 1000 // 15 分钟防抖
 const RECENT_MIN = 20 // 只处理最近 20 分钟内更新过的 session

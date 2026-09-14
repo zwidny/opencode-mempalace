@@ -87,7 +87,29 @@ curl http://127.0.0.1:8765/healthz   # → ok
 `{file:...}` 语法让 token 从文件读取，不必明文进配置。重启 opencode 后，
 AI 会话即获得 40+ `mempalace_*` 工具（search / mine / kg / diary / logstream…）。
 
-### 3. 安装自动化插件（hindsight 模式：独立目录注册）
+### 3. 安装自动化插件
+
+#### 方式一：npm 安装（推荐，无需 clone 本仓库）
+
+已发布为 npm 包 [`@zwidny/opencode-mempalace`](https://www.npmjs.com/package/@zwidny/opencode-mempalace)。
+opencode 启动时用 bun 自动安装到 `~/.cache/opencode/node_modules/`：
+
+```json
+{
+  "plugin": ["@zwidny/opencode-mempalace"]
+}
+```
+
+插件自带的 Python 脚本（`scripts/` + `pyproject.toml` + `uv.lock`）随包分发，
+`mempalace-sync` 触发 `uv run --project <包目录>` 时自动在包内建 venv（首次运行较慢）。
+
+宫殿服务容器同理，从包路径启动（compose 已参数化 `${HOME}`，任意用户名可用）：
+
+```bash
+docker compose -f ~/.cache/opencode/node_modules/@zwidny/opencode-mempalace/docker/mempalace-serve/compose.yaml up -d --build
+```
+
+#### 方式二：git clone（开发本仓库时）
 
 两个插件位于本仓库 `plugins/opencode/` 目录，**自包含入口、随仓库 git 管理**：
 

@@ -1,0 +1,6 @@
+# npm 包内容白名单见 package.json files 字段；
+# 本文件用于把白名单目录内的垃圾一并排除（如 scripts/__pycache__）
+__pycache__/
+*.py[oc]
+.venv/
+.serena/

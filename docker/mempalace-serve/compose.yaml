@@ -7,11 +7,15 @@ services:
       - "127.0.0.1:8765:8765"
     volumes:
       # 全部 palace 状态（palace/、knowledge_graph sqlite、locks/、config.json、server/bearer-token）
-      - /home/zhao/.mempalace:/root/.mempalace
+      # 路径参数化：跟随任意用户的 HOME（docker compose 自动继承 shell 环境）
+      - ${HOME:-/home/zhao}/.mempalace:/root/.mempalace
       # chroma onnx embedding 模型缓存（167M，避免容器重建时重新下载）
-      - /home/zhao/.cache/chroma:/root/.cache/chroma
-      # session jsonl 导出目录（mine 的 source 路径；entrypoint 的 /home/zhao 软链保证路径对齐）
-      - /home/zhao/.config/doc_crawler:/root/.config/doc_crawler
+      - ${HOME:-/home/zhao}/.cache/chroma:/root/.cache/chroma
+      # session jsonl 导出目录（mine 的 source 路径；entrypoint 借 HOST_HOME 软链保证路径对齐）
+      - ${HOME:-/home/zhao}/.config/doc_crawler:/root/.config/doc_crawler
+    environment:
+      # 宿主 home 绝对路径 → entrypoint 据此建软链，对齐 palace config 内的宿主路径
+      - HOST_HOME=${HOME:-/home/zhao}
     restart: unless-stopped
     # 注：宿主 opencode 的 stdio MCP 若仍持写锁，serve 会启动失败并按本策略
     # 循环重试，宿主锁释放后自动就绪（等价于此前 systemd 方案的 Restart 语义）

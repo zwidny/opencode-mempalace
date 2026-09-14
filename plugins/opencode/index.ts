@@ -1,15 +1,17 @@
 /**
- * mempalace opencode plugin 入口（hindsight 模式：自包含目录）。
+ * mempalace opencode plugin 入口。
  *
  * 目录入口无 package.json → opencode 自动认本 index.ts（INDEX_FILES 优先级
  * index.ts > index.tsx > index.js > ...；注意：目录入口不扫描散文件）。
+ * npm 包入口（@zwidny/opencode-mempalace）→ package.json main 指向本文件。
  * bun 原生执行 TS，无需构建步骤。
  *
  * 注册方式（~/.config/opencode/opencode.json）：
- *   "plugin": ["file:///home/zhao/repos/mth/mempalace_mth/plugins/opencode"]
+ *   npm 发布形态：  "plugin": ["@zwidny/opencode-mempalace"]（bun 自动安装）
+ *   本地开发形态：  "plugin": ["file:///home/zhao/repos/mth/mempalace_mth/plugins/opencode"]
  *
- * 本目录受本仓库 git 管理；与 ~/.opencode/plugins（ECC 体系）完全隔离——
- * loader 对每个 plugin entry 独立 attempt，单入口故障不波及其他插件。
+ * 插件内部路径（scripts/、pyproject、uv.lock）均从 import.meta.dir 推导包根，
+ * 两种安装形态无需改代码。
  */
 
 // MemPalace session 同步（session.idle 防抖 → python 编排脚本）

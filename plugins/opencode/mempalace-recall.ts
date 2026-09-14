@@ -12,8 +12,11 @@
 
 import type { PluginInput } from "@opencode-ai/plugin"
 
-const SERVE_URL = "http://127.0.0.1:8765/mcp"
-const TOKEN_FILE = "/home/zhao/.mempalace/server/bearer-token"
+const SERVE_URL = process.env.MEMPALACE_SERVE_URL || "http://127.0.0.1:8765/mcp"
+// token 路径跟随当前用户 home（osMod 在插件初始化时预加载）；
+// 非默认布局可用 MEMPALACE_TOKEN_FILE 覆盖
+const TOKEN_FILE = () =>
+  process.env.MEMPALACE_TOKEN_FILE ?? `${osMod!.homedir()}/.mempalace/server/bearer-token`
 const GLOBAL_WING = "opencode-sessions-high"
 const PROJ_LIMIT = 4
 const GLOBAL_LIMIT = 3
@@ -41,7 +44,7 @@ function bearerToken(): string | null {
   if (!tokenRead) {
     tokenRead = true
     try {
-      tokenCache = fsMod!.readFileSync(TOKEN_FILE, "utf-8").trim() || null
+      tokenCache = fsMod!.readFileSync(TOKEN_FILE(), "utf-8").trim() || null
     } catch {
       tokenCache = null
     }

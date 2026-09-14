@@ -1,0 +1,33 @@
+{
+  "name": "@zwidny/opencode-mempalace",
+  "version": "0.1.0",
+  "description": "opencode × MemPalace 自动长期记忆管道：session 自动开采 + 项目记忆自动召回",
+  "type": "module",
+  "license": "MIT",
+  "main": "plugins/opencode/index.ts",
+  "exports": {
+    ".": "./plugins/opencode/index.ts"
+  },
+  "files": [
+    "plugins",
+    "scripts/*.py",
+    "docker",
+    "pyproject.toml",
+    "uv.lock",
+    "AGENTS.md"
+  ],
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "mempalace",
+    "memory",
+    "long-term-memory"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zwidny/opencode-mempalace.git"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "*"
+  }
+}
